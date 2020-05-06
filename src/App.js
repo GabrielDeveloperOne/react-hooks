@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import UserTable from './tables/UserTable';
 import AddUserForm from './forms/AddUserForm';
+import EditUserForm from './forms/EditUserForm'
 
 const App = () => {
 
@@ -30,24 +31,39 @@ const App = () => {
     setUsers([...users, user])
   }
 
-  const updateUser = (id, updateUser) => {
+  const updatedUser = (id, updateUser) => {
     setEditing(false)
-    setUsers(user.map(user => (user.id === id ? updatedUser : user)))
+    setUsers(users.map(user => (user.id === id ? updatedUser : user)))
   }
 
   return (
     <div className="container">
         <h1>CRUD App with Hooks</h1>
         <div className="flex-row">
-          <div className="flex-large">
-            <h2>Add user</h2>
-            <AddUserForm addUser={addUser} />
-          </div>
+        <div className="flex-large">
+  {editing ? (
+    <div>
+      <h2>Edit user</h2>
+      <EditUserForm
+        setEditing={setEditing}
+        currentUser={currentUser}
+        updateUser={updatedUser}
+      />
+    </div>
+  ) : (
+    <div>
+      <h2>Add user</h2>
+      <AddUserForm addUser={addUser} />
+    </div>
+  )}
+</div>
           <div className="flex-large">
             <h2>View user</h2>
             <UserTable users={users} editRow={editRow} deleteUser={deleteUser}/>
           </div>
+          
         </div>
+        
     </div>
   );
 }
