@@ -10,11 +10,29 @@ const App = () => {
     {id: 3, name: 'Olegario', username: 'olegarizinho'}
   ]
 
+  const deleteUser = id => {
+    setUsers(users.filter(user => user.id !== id))
+  }
+
+  const [editing, setEditing] = useState(false);
+  const initialFormState = {id: null, name: '', username: ''}
+  const [currentUser, setCurrentUser] = useState(initialFormState);
+
+  const editRow = user => {
+    setEditing(true)
+    setCurrentUser({id: user.id, name: user.name, username: user.username});
+  }
+
   const [users, setUsers] = useState(userData)
 
   const addUser = user => {
     user.id = users.length + 1
     setUsers([...users, user])
+  }
+
+  const updateUser = (id, updateUser) => {
+    setEditing(false)
+    setUsers(user.map(user => (user.id === id ? updatedUser : user)))
   }
 
   return (
@@ -27,7 +45,7 @@ const App = () => {
           </div>
           <div className="flex-large">
             <h2>View user</h2>
-            <UserTable users={users}/>
+            <UserTable users={users} editRow={editRow} deleteUser={deleteUser}/>
           </div>
         </div>
     </div>
